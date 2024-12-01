@@ -8,8 +8,8 @@ fn parser(input: &str) -> (Vec<u32>, Vec<u32>) {
     let (mut left, mut right) = input
         .lines()
         .map(|l| {
-            let mut it = l.split_whitespace().flat_map(|s| s.parse::<u32>());
-            (it.next().unwrap(), it.next().unwrap())
+            aoc_companion::regex_parser!("[0-9]+  [0-9]+"; l => left, right);
+            (left.parse::<u32>().unwrap(), right.parse::<u32>().unwrap())
         })
         .collect::<(Vec<_>, Vec<_>)>();
 

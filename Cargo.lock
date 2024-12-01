@@ -38,6 +38,16 @@ version = "0.1.0"
 dependencies = [
  "aoc-companion",
  "aoc-companion-codegen",
+ "lazy_static",
+ "regex",
+]
+
+[[package]]
+name = "day-02"
+version = "0.1.0"
+dependencies = [
+ "aoc-companion",
+ "aoc-companion-codegen",
 ]
 
 [[package]]
