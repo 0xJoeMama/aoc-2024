@@ -26,10 +26,13 @@ fn part1((left, right): &(Vec<u32>, Vec<u32>)) -> u32 {
 }
 
 fn part2((left, right): &(Vec<u32>, Vec<u32>)) -> u32 {
-    let freq_map: HashMap<u32, u32> = right.iter().fold(HashMap::new(), |mut acc, v| {
-        *acc.entry(*v).or_insert(0) += 1;
-        acc
-    });
+    let freq_map: HashMap<u32, u32> =
+        right
+            .iter()
+            .fold(HashMap::with_capacity(right.len()), |mut acc, v| {
+                acc.entry(*v).and_modify(|v| *v += 1).or_insert(1);
+                acc
+            });
 
     left.iter()
         .filter_map(|left_v| freq_map.get(left_v).map(|it| it * left_v))
