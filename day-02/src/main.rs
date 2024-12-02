@@ -1,4 +1,4 @@
-use std::{cmp::Ordering, usize};
+use std::cmp::Ordering;
 
 use aoc_companion_codegen::day;
 
