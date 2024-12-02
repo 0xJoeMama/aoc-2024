@@ -48,6 +48,8 @@ version = "0.1.0"
 dependencies = [
  "aoc-companion",
  "aoc-companion-codegen",
+ "lazy_static",
+ "regex",
 ]
 
 [[package]]
