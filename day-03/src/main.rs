@@ -22,7 +22,7 @@ enum State {
 }
 
 fn part1(input: &Input) -> Output1 {
-    let regex = Regex::new(r"mul\(([0-9]{1,3}),([0-9]{1,3})\)|do\(\)|don't\(\)").unwrap();
+    let regex = Regex::new(r"mul\(([0-9]{1,3}),([0-9]{1,3})\)").unwrap();
     regex
         .captures_iter(input)
         .map(|c| c.extract())

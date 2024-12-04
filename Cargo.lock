@@ -13,9 +13,9 @@ dependencies = [
 
 [[package]]
 name = "aoc-companion"
-version = "0.1.0"
+version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c2a01920fc53c64d60cde732a03291c0dbc4e86457507ceb2e135beb68811dd1"
+checksum = "f04527fff5c6853215c750de9f8f8ab0a0aa03d0d3203078bf0e54f7f42f6135"
 dependencies = [
  "lazy_static",
  "regex",
@@ -54,6 +54,16 @@ dependencies = [
 
 [[package]]
 name = "day-03"
+version = "0.1.0"
+dependencies = [
+ "aoc-companion",
+ "aoc-companion-codegen",
+ "lazy_static",
+ "regex",
+]
+
+[[package]]
+name = "day-04"
 version = "0.1.0"
 dependencies = [
  "aoc-companion",
