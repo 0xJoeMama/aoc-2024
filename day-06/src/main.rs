@@ -66,19 +66,25 @@ fn parser(input: &str) -> Input {
     (map, guard.unwrap())
 }
 
-fn perform_move(map: &HashMap<Point, State>, mut guard: Guard) -> Option<Guard> {
+fn perform_move(map: impl Fn(&Point) -> Option<State>, mut guard: Guard) -> Option<Guard> {
     let mut new_pos = guard.pos + guard.facing;
-    while map.contains_key(&new_pos) && map[&new_pos] == State::Obstacle {
-        guard.rotate();
-        new_pos = guard.pos + guard.facing;
+    loop {
+        if let Some(state) = map(&new_pos) {
+            if state == State::Obstacle {
+                guard.rotate();
+                new_pos = guard.pos + guard.facing;
+            } else {
+                break;
+            }
+        } else {
+            break;
+        }
     }
 
-    if map.contains_key(&new_pos) {
+    map(&new_pos).map(|_| {
         guard.pos = new_pos;
-        Some(guard)
-    } else {
-        return None;
-    }
+        guard
+    })
 }
 
 fn part1((map, guard): &Input) -> usize {
@@ -86,7 +92,7 @@ fn part1((map, guard): &Input) -> usize {
     poses.insert(guard.pos);
     let mut guard = guard.clone();
 
-    while let Some(new_guard) = perform_move(map, guard) {
+    while let Some(new_guard) = perform_move(|p| map.get(p).cloned(), guard) {
         poses.insert(new_guard.pos);
         guard = new_guard;
     }
@@ -100,7 +106,7 @@ fn part2((map, guard): &Input) -> usize {
     let mut attempt_poses: HashSet<Point> = HashSet::new();
     let mut tmp_guard = guard.clone();
 
-    while let Some(new_guard) = perform_move(map, tmp_guard) {
+    while let Some(new_guard) = perform_move(|p| map.get(p).cloned(), tmp_guard) {
         if map
             .get(&new_guard.pos)
             .is_some_and(|neighbor| *neighbor == State::Free)
@@ -115,15 +121,21 @@ fn part2((map, guard): &Input) -> usize {
 
     let mut visited: HashSet<Guard> = HashSet::with_capacity(map.len());
     'outer: for pos in &attempt_poses {
-        // TODO: avoid cloning by using a function instead
-        let mut new_map = map.clone();
-        new_map.insert(*pos, State::Obstacle);
         visited.clear();
 
         visited.insert(guard.clone());
         let mut guard = guard.clone();
 
-        while let Some(new_guard) = perform_move(&new_map, guard) {
+        while let Some(new_guard) = perform_move(
+            |p| {
+                if p == pos {
+                    Some(State::Obstacle)
+                } else {
+                    map.get(p).cloned()
+                }
+            },
+            guard,
+        ) {
             if !visited.insert(new_guard.clone()) {
                 cnt += 1;
                 continue 'outer;
