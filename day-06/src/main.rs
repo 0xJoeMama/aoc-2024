@@ -117,7 +117,6 @@ fn part2((map, guard): &Input) -> usize {
 
         tmp_guard = new_guard;
     }
-    println!("Poses : {}", attempt_poses.len());
 
     let mut visited: HashSet<Guard> = HashSet::with_capacity(map.len());
     'outer: for pos in &attempt_poses {

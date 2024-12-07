@@ -122,25 +122,33 @@ fn do_part(input: &Input, modulus: u32) -> i64 {
     input
         .iter()
         .filter(|(test_case, values)| {
-            OperIterator::new(values.as_slice(), modulus).any(|op_iterator| {
+            OperIterator::new(values, modulus).any(|op_iterator| {
                 op_iterator
                     .zip(values.iter().skip(1))
-                    .fold(values[0], |old_val, (op, curr)| match op {
-                        Op::Add => old_val + curr,
-                        Op::Mul => old_val * curr,
-                        Op::Concat => {
-                            let mut digits = 0;
-                            let mut curr_cp = *curr;
-                            while curr_cp != 0 {
-                                digits += 1;
-                                curr_cp /= 10;
-                            }
+                    .try_fold(values[0], |old_val, (op, curr)| {
+                        let res = match op {
+                            Op::Add => old_val + curr,
+                            Op::Mul => old_val * curr,
+                            Op::Concat => {
+                                let mut digits = 0;
+                                let mut curr_cp = *curr;
+                                while curr_cp != 0 {
+                                    digits += 1;
+                                    curr_cp /= 10;
+                                }
 
-                            let res = old_val * 10i64.pow(digits) + curr;
-                            res
+                                let res = old_val * 10i64.pow(digits) + curr;
+                                res
+                            }
+                        };
+
+                        if res <= *test_case {
+                            Some(res)
+                        } else {
+                            None
                         }
                     })
-                    == *test_case
+                    .is_some_and(|it| it == *test_case)
             })
         })
         .map(|(test_case, _)| test_case)
