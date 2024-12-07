@@ -125,6 +125,8 @@ fn do_part(input: &Input, modulus: u32) -> i64 {
             OperIterator::new(values, modulus).any(|op_iterator| {
                 op_iterator
                     .zip(values.iter().skip(1))
+                    // notice that this actually double checks a lot of values
+                    // if i had used recursion this wouldn't have happened
                     .try_fold(values[0], |old_val, (op, curr)| {
                         let res = match op {
                             Op::Add => old_val + curr,
