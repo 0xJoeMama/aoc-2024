@@ -30,7 +30,7 @@ fn parser(input: &str) -> Input {
 
 fn part1((bounds, input): &Input) -> usize {
     let mut antinode_poses = HashSet::with_capacity(1000);
-    for (_, antennas) in input {
+    for antennas in input.values() {
         for a1 in antennas {
             for a2 in antennas {
                 if a2 == a1 {
@@ -55,7 +55,7 @@ fn part1((bounds, input): &Input) -> usize {
 
 fn part2((bounds, input): &Input) -> usize {
     let mut antinode_poses = HashSet::with_capacity(1000);
-    for (_, antennas) in input {
+    for antennas in input.values() {
         for a1 in antennas {
             for a2 in antennas {
                 if a2 == a1 {

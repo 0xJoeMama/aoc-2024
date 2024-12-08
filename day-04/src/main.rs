@@ -1,4 +1,4 @@
-use std::{str::FromStr, usize};
+use std::str::FromStr;
 
 use aoc_companion::point::{Point, PointsBetween};
 use aoc_companion_codegen::day;

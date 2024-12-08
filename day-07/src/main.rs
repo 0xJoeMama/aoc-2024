@@ -139,8 +139,7 @@ fn do_part(input: &Input, modulus: u32) -> i64 {
                                     curr_cp /= 10;
                                 }
 
-                                let res = old_val * 10i64.pow(digits) + curr;
-                                res
+                                old_val * 10i64.pow(digits) + curr
                             }
                         };
 

@@ -25,7 +25,7 @@ impl Guard {
         }
     }
 
-    fn rotate(self: &mut Self) {
+    fn rotate(&mut self) {
         // basically -90 degrees rotation matrix
         let tmp = self.facing.x;
         self.facing.x = self.facing.y;
@@ -55,8 +55,10 @@ fn parser(input: &str) -> Input {
                 (p, state, guard)
             }) {
                 map.entry(p).insert_entry(state);
-                if guard.is_some() && new_guard.is_none() {
-                    let _ = new_guard.insert(guard.unwrap());
+                if let Some(guard) = guard {
+                    if new_guard.is_none() {
+                        let _ = new_guard.insert(guard);
+                    }
                 }
             }
             (map, guard.or(new_guard))
@@ -68,14 +70,10 @@ fn parser(input: &str) -> Input {
 
 fn perform_move(map: impl Fn(&Point) -> Option<State>, mut guard: Guard) -> Option<Guard> {
     let mut new_pos = guard.pos + guard.facing;
-    loop {
-        if let Some(state) = map(&new_pos) {
-            if state == State::Obstacle {
-                guard.rotate();
-                new_pos = guard.pos + guard.facing;
-            } else {
-                break;
-            }
+    while let Some(state) = map(&new_pos) {
+        if state == State::Obstacle {
+            guard.rotate();
+            new_pos = guard.pos + guard.facing;
         } else {
             break;
         }

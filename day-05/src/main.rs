@@ -25,8 +25,8 @@ fn parser(input: &str) -> Input {
         })
         .collect::<Vec<_>>()
         .iter()
-        .fold(HashMap::new(), |mut acc, (a, b)| {
-            acc.entry(*a).or_insert(HashSet::new()).insert(*b);
+        .fold(HashMap::new(), |mut acc: HashMap<u32, HashSet<u32>>, (a, b)| {
+            acc.entry(*a).or_default().insert(*b);
             acc
         });
 
