@@ -62,16 +62,15 @@ fn part2((bounds, input): &Input) -> usize {
                     continue;
                 }
 
-                antinode_poses.insert(*a1);
-                antinode_poses.insert(*a2);
                 let diff = *a2 - *a1;
-                let mut antinode1 = *a1 - diff;
+
+                let mut antinode1 = *a1;
                 while is_within_bounds(&antinode1, bounds) {
                     antinode_poses.insert(antinode1);
                     antinode1 = antinode1 - diff;
                 }
 
-                let mut antinode2 = *a2 + diff;
+                let mut antinode2 = *a2;
                 while is_within_bounds(&antinode2, bounds) {
                     antinode_poses.insert(antinode2);
                     antinode2 = antinode2 - diff;
